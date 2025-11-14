@@ -16,13 +16,13 @@ typedef struct {
 } S_Serpent;
 
 /**
-   @brief créer un serpent
-   @param positionInitialeQueue coordonnée de la queue du serpent
+   @brief crï¿½er un serpent
+   @param positionInitialeQueue coordonnï¿½e de la queue du serpent
    @param longueurInitiale longueur initiale du serpent (>=1)
    @param directionInitiale direction initiale du serpent
    @param largeurTerrain largeur du terrain
    @param hauteurTerrain hauteur du terrain
-   @return le serpent créé
+   @return le serpent crï¿½ï¿½
 **/
 S_Serpent S_serpent(C_Coordonnee positionInitialeQueue,
 		    unsigned int longueurInitiale,
@@ -31,23 +31,23 @@ S_Serpent S_serpent(C_Coordonnee positionInitialeQueue,
 		    unsigned int hauteurTerrain);
 
 /**
-   @brief coordonnées de la tête du serpent
+   @brief coordonnï¿½es de la tï¿½te du serpent
    @param serpent le serpent
-   @return coordonnée de la tête du serpent
+   @return coordonnï¿½e de la tï¿½te du serpent
 **/
 C_Coordonnee S_positionTete(S_Serpent serpent);
 
 /**
-   @brief coordonnées de la queue du serpent
+   @brief coordonnï¿½es de la queue du serpent
    @param serpent le serpent
-   @return coordonnée de la queue du serpent
+   @return coordonnï¿½e de la queue du serpent
 **/
 C_Coordonnee S_positionQueue(S_Serpent serpent);
 
 /**
    @brief fait avancer le serpent
    @param pserpent pointeur vers le serpent
-   @note le serpent avance dans la direction courante et il peut grandir si l'accroissement est > 0 (décrémente l'accroissement dans ce cas). Si le serpent atteint le bord du terrain, il réapparaît de l'autre côté.
+   @note le serpent avance dans la direction courante et il peut grandir si l'accroissement est > 0 (dï¿½crï¿½mente l'accroissement dans ce cas). Si le serpent atteint le bord du terrain, il rï¿½apparaï¿½t de l'autre cï¿½tï¿½.
 **/
 void S_avancer(S_Serpent* pserpent);
 
@@ -62,8 +62,8 @@ D_Direction S_direction(S_Serpent serpent);
    @brief change la direction du serpent
    @param pserpent pointeur vers le serpent
    @param nouvelleDirection nouvelle direction du serpent
-   @return 0 si la direction a été changée, -1 sinon
-   @note la nouvelle direction doit être différente de la direction courante et ne pas être l'opposée
+   @return 0 si la direction a ï¿½tï¿½ changï¿½e, -1 sinon
+   @note la nouvelle direction doit ï¿½tre diffï¿½rente de la direction courante et ne pas ï¿½tre l'opposï¿½e
 **/
 int S_changerDirection(S_Serpent* pserpent, D_Direction nouvelleDirection);
 
@@ -89,25 +89,25 @@ unsigned int S_longueur(S_Serpent serpent);
 bool S_seMord(S_Serpent serpent);
 
 /**
-   @brief teste si une coordonnée est occupée par le serpent
+   @brief teste si une coordonnï¿½e est occupï¿½e par le serpent
    @param serpent le serpent
-   @param coord la coordonnée
-   @return true si la coordonnée est occupée par le serpent, false sinon
+   @param coord la coordonnï¿½e
+   @return true si la coordonnï¿½e est occupï¿½e par le serpent, false sinon
 **/
 bool S_estUneCoordonneeDuSerpent(S_Serpent serpent, C_Coordonnee coord);
 
 /**
-   @brief retourne les coordonnées du serpent sous forme de tableau dynamique
+   @brief retourne les coordonnï¿½es du serpent sous forme de tableau dynamique
    @param serpent le serpent
-   @return un tableau dynamique contenant les coordonnées du serpent (de la queue à la tête)
-   @note la mémoire allouée pour le tableau doit être libérée par l'appelant avec free()
-   @note la première coordonnée du tableau est celle de la queue et la dernière est celle de la tête
+   @return un tableau dynamique contenant les coordonnï¿½es du serpent (de la queue ï¿½ la tï¿½te)
+   @note la mï¿½moire allouï¿½e pour le tableau doit ï¿½tre libï¿½rï¿½e par l'appelant avec free()
+   @note la premiï¿½re coordonnï¿½e du tableau est celle de la queue et la derniï¿½re est celle de la tï¿½te
 **/
 C_Coordonnee* S_coordonneeDuSerpent(S_Serpent serpent);
 
 /**
-   @brief libère la mémoire allouée dynamiquement pour le serpent
-   @param pserpent pointeur vers le serpent à libérer
+   @brief libï¿½re la mï¿½moire allouï¿½e dynamiquement pour le serpent
+   @param pserpent pointeur vers le serpent ï¿½ libï¿½rer
 **/
 void S_liberer(S_Serpent* pserpent);
 #endif

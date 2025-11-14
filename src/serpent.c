@@ -7,21 +7,25 @@ S_Serpent S_serpent(C_Coordonnee positionInitialeQueue,
 		    D_Direction directionInitiale,
 		    unsigned int largeurTerrain,
 		    unsigned int hauteurTerrain) {
-  S_Serpent serpent = {LC_listeChainee(), LC_listeChainee(), 0, 0, D_HAUT, 1, 1};
-
+  // Initialisation du serpent
+  S_Serpent serpent = {LC_listeChainee(), LC_listeChainee(), longueurInitiale, longueurInitiale-1 , directionInitiale, largeurTerrain, hauteurTerrain};
+  // Création d'un premier maillion 
+  C_Coordonnee* pQueueCoord = (C_Coordonnee*)C_copier(&positionInitialeQueue);
+  //Initialisation de la liste chainee
+  serpent.queue = LC_ajouter(pQueueCoord,)
   return serpent;
 }
 
 C_Coordonnee S_positionTete(S_Serpent serpent) {
-  return  C_coordonnee(0,0);
+  return  *((C_Coordonnee*)LC_obtenirElement(serpent.tete))
 }
 
 C_Coordonnee S_positionQueue(S_Serpent serpent) {
-  return  C_coordonnee(0,0);
+  return  *((C_Coordonnee*)LC_obtenirElement(serpent.queue))
 }
 
 void S_avancer(S_Serpent* pserpent) {
-  C_Coordonnee coordTete = *pserpent.positionInitialeQueue
+  
 }
 
 D_Direction S_direction(S_Serpent serpent) {
