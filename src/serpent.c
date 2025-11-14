@@ -8,20 +8,39 @@ S_Serpent S_serpent(C_Coordonnee positionInitialeQueue,
 		    unsigned int largeurTerrain,
 		    unsigned int hauteurTerrain) {
   // Initialisation du serpent
-  S_Serpent serpent = {LC_listeChainee(), LC_listeChainee(), longueurInitiale, longueurInitiale-1 , directionInitiale, largeurTerrain, hauteurTerrain};
-  // Création d'un premier maillion 
-  C_Coordonnee* pQueueCoord = (C_Coordonnee*)C_copier(&positionInitialeQueue);
-  //Initialisation de la liste chainee
-  serpent.queue = LC_ajouter(pQueueCoord,)
+  S_Serpent serpent = {LC_listeChainee(), LC_listeChainee(), longueurInitiale, longueurInitiale-1, directionInitiale, largeurTerrain, hauteurTerrain};
+  unsigned int x = C_abscisse(positionInitialeQueue); 
+  unsigned int y = C_ordonnee(positionInitialeQueue); 
+  unsigned int accroissement =  serpent.accroissement;
+  C_Coordonnee positionInitialeTete; 
+  //Initialisation du serpent en fonction de la coordonnée de départ 
+  switch(directionInitiale){
+    case D_HAUT : 
+      positionInitialeTete = C_coordonnee(x,y-accroissement); 
+    break; 
+    case D_BAS : 
+      positionInitialeTete = C_coordonnee(x, y+accroissement); 
+    break; 
+    case D_GAUCHE : 
+      positionInitialeTete = C_coordonnee(x - accroissement,y); 
+    break; 
+    case D_DROITE : 
+      positionInitialeTete = C_coordonnee(x+accroissement,y); 
+    break; 
+  };
+  // Ajouts des informations tete / queue au serpent  
+  LC_ajouter(&serpent.tete, &positionInitialeTete, C_copier); 
+  LC_ajouter(&serpent.queue, &positionInitialeQueue,C_copier); 
+
   return serpent;
 }
 
 C_Coordonnee S_positionTete(S_Serpent serpent) {
-  return  *((C_Coordonnee*)LC_obtenirElement(serpent.tete))
+  return  *((C_Coordonnee*)LC_obtenirElement(serpent.tete));
 }
 
 C_Coordonnee S_positionQueue(S_Serpent serpent) {
-  return  *((C_Coordonnee*)LC_obtenirElement(serpent.queue))
+  return  *((C_Coordonnee*)LC_obtenirElement(serpent.queue));
 }
 
 void S_avancer(S_Serpent* pserpent) {
@@ -60,6 +79,6 @@ C_Coordonnee* S_coordonneeDuSerpent(S_Serpent serpent) {
 
 
 void S_liberer(S_Serpent* pserpent) {
-  
+  return NULL;
 }
 
