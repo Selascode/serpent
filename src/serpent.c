@@ -44,7 +44,8 @@ C_Coordonnee S_positionQueue(S_Serpent serpent) {
 }
 
 void S_avancer(S_Serpent* pserpent) {
-  
+  C_Coordonnee coordTete, nelleCoordonnee; 
+  LC_listeChainee nelleTete; 
 }
 
 D_Direction S_direction(S_Serpent serpent) {
