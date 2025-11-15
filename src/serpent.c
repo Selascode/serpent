@@ -44,41 +44,55 @@ C_Coordonnee S_positionQueue(S_Serpent serpent) {
 }
 
 void S_avancer(S_Serpent* pserpent) {
-  S_Serpent serpent = *pserpent; 
+
+  // Initialisation 
   C_Coordonnee coordTete, nelleCoordonnee; 
   LC_ListeChainee nelleTete; 
 
-  coordTete = S_positionTete(serpent); 
-  nelleCoordonnee = C_coordonneeVoisine(coordTete, serpent.direction, serpent.largeurTerrain,serpent.hauteurTerrain);
-  nelleTete = LC_listeChainee() ;
-  LC_fixerListeSuivante(pserpent, nelleTete); 
-  if (serpent.accroissement == 0 ) {
-    LC_supprimerTete(pserpent,C_liberer); 
+  coordTete = S_positionTete(*pserpent); 
+  nelleCoordonnee = C_coordonneeVoisine(coordTete, pserpent->direction, pserpent->largeurTerrain,pserpent->hauteurTerrain);
+  
+  nelleTete = LC_listeChainee();
+  LC_ajouter(&nelleTete,&nelleCoordonnee,C_copier);
+  LC_fixerListeSuivante(&pserpent->tete, nelleTete); 
+  pserpent->tete=nelleTete;
+  if (pserpent->accroissement == 0 ) {
+    LC_supprimerTete(&pserpent->queue,C_liberer); 
   }else{
-    serpent.accroissement += 1; 
-    serpent.longueur += 1; 
+    pserpent->accroissement = pserpent->accroissement+1; 
+    pserpent->longueur = pserpent->longueur+1; 
   }
+
 }
 
 D_Direction S_direction(S_Serpent serpent) {
-  return D_HAUT;
+  return serpent.direction;
 }
 
 int S_changerDirection(S_Serpent* pserpent, D_Direction nouvelleDirection) {
+  int aChange = -1; 
+  D_Direction directionCourante = S_direction(*pserpent);
+  D_Direction directionOpposee = D_directionOpposee(directionCourante); 
+  if((directionCourante!= nouvelleDirection)&&(directionCourante!= directionOpposee)){
+    pserpent->direction = nouvelleDirection;
+    aChange = 0; 
+  }
 
-  return 0;
+  return aChange;
 }
 
 void S_accroissement(S_Serpent* pserpent, unsigned int longueur) {
+  pserpent->longueur = pserpent->longueur + longueur; 
+  
 
 }
 
 unsigned int S_longueur(S_Serpent serpent) {
-  return 0;
+  return serpent.longueur;
 }
 
 bool S_seMord(S_Serpent serpent) {
-  return true;
+  return false;
 }
 
 bool S_estUneCoordonneeDuSerpent(S_Serpent serpent, C_Coordonnee coord) {
