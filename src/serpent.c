@@ -47,22 +47,21 @@ void S_avancer(S_Serpent* pserpent) {
 
   // Initialisation 
   C_Coordonnee coordTete, nelleCoordonnee; 
-  LC_ListeChainee nelleTete; 
+  LC_ListeChainee nelleTete = LC_listeChainee();
 
   coordTete = S_positionTete(*pserpent); 
-  nelleCoordonnee = C_coordonneeVoisine(coordTete, pserpent->direction, pserpent->largeurTerrain,pserpent->hauteurTerrain);
-  
-  nelleTete = LC_listeChainee();
+  nelleCoordonnee = C_coordonneeVoisine(coordTete, S_direction(*pserpent), pserpent->largeurTerrain,pserpent->hauteurTerrain);
+ 
   LC_ajouter(&nelleTete,&nelleCoordonnee,C_copier);
   LC_fixerListeSuivante(&pserpent->tete, nelleTete); 
   pserpent->tete=nelleTete;
+
   if (pserpent->accroissement == 0 ) {
     LC_supprimerTete(&pserpent->queue,C_liberer); 
   }else{
     pserpent->accroissement = pserpent->accroissement+1; 
     pserpent->longueur = pserpent->longueur+1; 
   }
-
 }
 
 D_Direction S_direction(S_Serpent serpent) {
