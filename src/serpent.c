@@ -67,7 +67,7 @@ int S_changerDirection(S_Serpent* pserpent, D_Direction nouvelleDirection) {
 
 void S_accroissement(S_Serpent* pserpent, unsigned int longueur) {
   pserpent->longueur += longueur; 
-  pserpent->accroissement += longueur; 
+  pserpent->accroissement = longueur; 
 }
 
 unsigned int S_longueur(S_Serpent serpent) {
@@ -97,7 +97,16 @@ bool S_estUneCoordonneeDuSerpent(S_Serpent serpent, C_Coordonnee coord) {
 }
 //@brief retourne les coordonn�es du serpent sous forme de tableau dynamique
 C_Coordonnee* S_coordonneeDuSerpent(S_Serpent serpent) {
-  (C_Coordonnee*) coordonnees = (C_Coordonnee*)malloc(serpent.longueur * sizeof(C_Coordonnee*));
+  unsigned int i = 0 ; 
+  LC_ListeChainee queue = serpent.queue; 
+  C_Coordonnee* coordonnees = (C_Coordonnee*)malloc(serpent.longueur * sizeof(C_Coordonnee));
+  C_Coordonnee coordCourante; 
+  while(!LC_estVide(queue)){
+    coordCourante = *((C_Coordonnee*)LC_obtenirElement(queue));
+    coordonnees[i] = coordCourante; 
+    queue = LC_obtenirListeSuivante(queue);
+    i++; 
+  }
   return coordonnees;
 }
 
@@ -110,6 +119,8 @@ void S_liberer(S_Serpent* pserpent) {
   }
   pserpent->tete = NULL; 
   pserpent->queue = NULL; 
+  pserpent->longueur = 0;
+  pserpent->accroissement = 0;
 
 }
 
