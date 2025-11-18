@@ -8,30 +8,13 @@ S_Serpent S_serpent(C_Coordonnee positionInitialeQueue,
 		    unsigned int largeurTerrain,
 		    unsigned int hauteurTerrain) {
   // Initialisation du serpent
-  S_Serpent serpent = {LC_listeChainee(), LC_listeChainee(), longueurInitiale, longueurInitiale-1, directionInitiale, largeurTerrain, hauteurTerrain};
-  unsigned int x = C_abscisse(positionInitialeQueue); 
-  unsigned int y = C_ordonnee(positionInitialeQueue); 
-  unsigned int accroissement =  serpent.accroissement;
-  C_Coordonnee positionInitialeTete; 
-  //Initialisation du serpent en fonction de la coordonnée de départ 
-  switch(directionInitiale){
-    case D_HAUT : 
-      positionInitialeTete = C_coordonnee(x,y-accroissement); 
-    break; 
-    case D_BAS : 
-      positionInitialeTete = C_coordonnee(x, y+accroissement); 
-    break; 
-    case D_GAUCHE : 
-      positionInitialeTete = C_coordonnee(x - accroissement,y); 
-    break; 
-    case D_DROITE : 
-      positionInitialeTete = C_coordonnee(x+accroissement,y); 
-    break; 
-  };
-  // Ajouts des informations tete / queue au serpent  
-  LC_ajouter(&serpent.tete, &positionInitialeTete, C_copier); 
-  LC_ajouter(&serpent.queue, &positionInitialeQueue,C_copier); 
-
+  LC_ListeChainee lc = LC_listeChainee(); 
+  LC_ajouter(&lc, &positionInitialeQueue,C_copier);
+  
+  S_Serpent serpent = {lc,lc, 1, longueurInitiale-1, directionInitiale, largeurTerrain, hauteurTerrain};
+  while(serpent.accroissement >=1){
+    S_avancer(&serpent);
+  }
   return serpent;
 }
 
@@ -45,13 +28,15 @@ C_Coordonnee S_positionQueue(S_Serpent serpent) {
 
 void S_avancer(S_Serpent* pserpent) {
 
-  // Initialisation 
+  // Initialisation des coordonnées de la t^te initiale /  Nouvelle
+  // Initialisation de la liste chainne assocciee à la tête
   C_Coordonnee coordTete, nelleCoordonnee; 
   LC_ListeChainee nelleTete = LC_listeChainee();
-
   coordTete = S_positionTete(*pserpent); 
+  //Ajout de la coordonnée voisine à la tête actuelle
   nelleCoordonnee = C_coordonneeVoisine(coordTete, S_direction(*pserpent), pserpent->largeurTerrain,pserpent->hauteurTerrain);
- 
+  
+  //Rattachement de la nouvelle tête au serpent
   LC_ajouter(&nelleTete,&nelleCoordonnee,C_copier);
   LC_fixerListeSuivante(&pserpent->tete, nelleTete); 
   pserpent->tete=nelleTete;
@@ -59,8 +44,8 @@ void S_avancer(S_Serpent* pserpent) {
   if (pserpent->accroissement == 0 ) {
     LC_supprimerTete(&pserpent->queue,C_liberer); 
   }else{
-    pserpent->accroissement = pserpent->accroissement+1; 
-    pserpent->longueur = pserpent->longueur+1; 
+    pserpent->accroissement--; 
+    pserpent->longueur++; 
   }
 }
 
@@ -81,9 +66,8 @@ int S_changerDirection(S_Serpent* pserpent, D_Direction nouvelleDirection) {
 }
 
 void S_accroissement(S_Serpent* pserpent, unsigned int longueur) {
-  pserpent->longueur = pserpent->longueur + longueur; 
-  
-
+  pserpent->longueur += longueur; 
+  pserpent->accroissement += longueur; 
 }
 
 unsigned int S_longueur(S_Serpent serpent) {
@@ -91,20 +75,41 @@ unsigned int S_longueur(S_Serpent serpent) {
 }
 
 bool S_seMord(S_Serpent serpent) {
-  return false;
+  C_Coordonnee teteActuelle =  S_positionTete(serpent);
+  return S_estUneCoordonneeDuSerpent(serpent,teteActuelle);
 }
 
 bool S_estUneCoordonneeDuSerpent(S_Serpent serpent, C_Coordonnee coord) {
-  return true;
+  // Objectif : Parcourt de tous les éléments de la LC (queue)
+  // Et vérificatopn de l'égalité 
+  
+  
+  //Récupération de la liste chainee (queue)
+  bool estCoord = false; 
+  C_Coordonnee coordCourante; 
+  LC_ListeChainee queue = serpent.queue; 
+  while(!LC_estVide(queue) && (!estCoord)){
+    coordCourante = *((C_Coordonnee*)LC_obtenirElement(queue)); 
+    estCoord = C_sontEgales(coord,coordCourante); 
+    queue = LC_obtenirListeSuivante(queue);
+  }
+  return estCoord;
 }
-
+//@brief retourne les coordonn�es du serpent sous forme de tableau dynamique
 C_Coordonnee* S_coordonneeDuSerpent(S_Serpent serpent) {
-  return NULL;
+  (C_Coordonnee*) coordonnees = (C_Coordonnee*)malloc(serpent.longueur * sizeof(C_Coordonnee*));
+  return coordonnees;
 }
 
 
 
 void S_liberer(S_Serpent* pserpent) {
-  return NULL;
+  // Suppression des pointeurs sur la tête et ceux de la queue 
+  while(!LC_estVide(pserpent->queue)){
+    LC_supprimerTete(&pserpent->queue, C_liberer); 
+  }
+  pserpent->tete = NULL; 
+  pserpent->queue = NULL; 
+
 }
 
