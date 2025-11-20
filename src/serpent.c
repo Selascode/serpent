@@ -66,7 +66,6 @@ int S_changerDirection(S_Serpent* pserpent, D_Direction nouvelleDirection) {
 }
 
 void S_accroissement(S_Serpent* pserpent, unsigned int longueur) {
-  pserpent->longueur += longueur; 
   pserpent->accroissement = longueur; 
 }
 
@@ -114,8 +113,11 @@ C_Coordonnee* S_coordonneeDuSerpent(S_Serpent serpent) {
 
 void S_liberer(S_Serpent* pserpent) {
   // Suppression des pointeurs sur la tête et ceux de la queue 
+  LC_ListeChainee temp; 
   while(!LC_estVide(pserpent->queue)){
+    temp = LC_obtenirListeSuivante(pserpent->queue);
     LC_supprimerTete(&pserpent->queue, C_liberer); 
+    pserpent->queue = temp;
   }
   pserpent->tete = NULL; 
   pserpent->queue = NULL; 
