@@ -6,7 +6,14 @@
 static C_Coordonnee J_nelleCoordonneeFruit(unsigned int largeurTerrain,
 					 unsigned int hauteurTerrain,
 					 S_Serpent serpent) {
-  return C_coordonnee(0,0);
+		C_Coordonnee coordFruit = S_positionTete(serpent); 
+		unsigned int x, y; 
+		while(C_sontEgales(S_positionTete(serpent),coordFruit)){
+			x = rand() % largeurTerrain; 
+			y = rand() % hauteurTerrain; 
+			coordFruit = C_coordonnee(x,y);
+		}
+  return coordFruit; 
 }
 
 unsigned int J_jouer(void* pinterface,
